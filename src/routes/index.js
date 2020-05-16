@@ -3,6 +3,6 @@ const router = express.Router();
 
 const todoRouter = require('./modules/todo');
 
-router.use('/api/todo', todoRouter);
+router.use('/api/v1/todo', todoRouter);
 
 module.exports = router;
