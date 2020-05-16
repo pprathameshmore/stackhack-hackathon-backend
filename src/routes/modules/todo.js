@@ -9,7 +9,7 @@ const promiseHandler = require('../../util/promiseHandler');
 
 const { todoObj } = require('../../util/todoObj');
 
-const { response, isDefVar, isDefObj } = require('../../util/util');
+const { response, isDefVar, isDefObj, responsePaging } = require('../../util/util');
 
 //Models
 const Todo = require('../../models/todo');
@@ -21,11 +21,59 @@ router.route('/')
     //Get all To-dos
     .get(async (req, res, next) => {
         try {
-            [err, data] = await promiseHandler(Todo.find().exec());
+
+            const { search, sort, a = 1, page = 1, limit = 10 } = req.query;
+
+            const currentPage = parseInt(page);
+            const pageLimit = parseInt(limit);
+
+            const todoCount = await Todo.countDocuments();
+
+            const totalPages = Math.ceil(todoCount / pageLimit);
+
+            if (isDefVar(search)) {
+
+                [err, data] = await promiseHandler(Todo.find({ $text: { $search: search } }).
+                    skip((pageLimit * currentPage) - pageLimit).
+                    limit(pageLimit).sort({ createdAt: -1 }));
+
+                if (err) return res.status(500).json(response(500, err, []));
+                return res.status(200).json(responsePaging(200, 'All todo', data, { currentPage: currentPage, pageLimit: pageLimit, totalPages: totalPages }));
+            }
+            console.log(sort);
+            if (isDefVar(sort)) {
+                switch (sort) {
+                    case 'date':
+                        [err, data] = await promiseHandler(Todo.find().
+                            sort({ createdAt: a }).
+                            skip((pageLimit * currentPage) - pageLimit).
+                            limit(pageLimit));
+                        return res.status(200).json(responsePaging(200, 'All todo sorted by date', data, { currentPage: currentPage, pageLimit: pageLimit, totalPages: totalPages }));
+
+                    case 'priority':
+                        [err, data] = await promiseHandler(Todo.find()
+                            .sort({ priority: a }).
+                            skip((pageLimit * currentPage) - pageLimit).
+                            limit(pageLimit));
+                        return res.status(200).json(responsePaging(200, 'All todo sorted by priority', data, { currentPage: currentPage, pageLimit: pageLimit, totalPages: totalPages }));
+
+                    case 'label':
+                        [err, data] = await promiseHandler(Todo.find()
+                            .sort({ label: a }).
+                            skip((pageLimit * currentPage) - pageLimit).
+                            limit(pageLimit));
+                        return res.status(200).json(responsePaging(200, 'All todo sorted by label', data, { currentPage: currentPage, pageLimit: pageLimit, totalPages: totalPages }));
+                }
+            }
+
+            [err, data] = await promiseHandler(Todo.find().
+                skip((pageLimit * currentPage) - pageLimit).
+                limit(pageLimit).sort({ createdAt: -1 })
+            );
 
             if (err) return res.status(500).json(response(500, err, []));
 
-            return res.status(200).json(response(200, 'All todo', data));
+            return res.status(200).json(responsePaging(200, 'All todo', data, { currentPage: currentPage, pageLimit: pageLimit, totalPages: totalPages }));
 
         } catch (error) {
             console.log(error);

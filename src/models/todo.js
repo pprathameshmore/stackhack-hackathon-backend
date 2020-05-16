@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const timestamp = require('mongoose-timestamp');
 
-const Todo = new mongoose.Schema({
+const TodoSchema = new mongoose.Schema({
     task: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     label: {
         type: String,
@@ -28,6 +29,8 @@ const Todo = new mongoose.Schema({
 
 });
 
-Todo.plugin(timestamp);
+TodoSchema.index({ task: 'text' });
 
-module.exports = mongoose.model('Todo', Todo);
+TodoSchema.plugin(timestamp);
+
+module.exports = mongoose.model('Todo', TodoSchema);

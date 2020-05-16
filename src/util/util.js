@@ -10,7 +10,15 @@ function response(statusCode, message, data) {
     };
 }
 
-exports.response = response;
+/* Generate response */
+function responsePaging(statusCode, message, data, paging) {
+    return {
+        statusCode: statusCode,
+        paging: paging,
+        message: message,
+        data: data
+    };
+}
 
 /* Validate */
 function isDefObj(object) {
@@ -26,5 +34,7 @@ function isDefVar(variable) {
     return false;
 }
 
+exports.response = response;
+exports.responsePaging = responsePaging;
 exports.isDefObj = isDefObj;
 exports.isDefVar = isDefVar;

@@ -1,3 +1,3 @@
 module.exports = promise => {
-    return promise.then(data => [null, data]).catch(error => [err]);
+    return promise.then(data => [null, data]).catch(error => [error]);
 }
