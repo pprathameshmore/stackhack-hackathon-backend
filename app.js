@@ -3,7 +3,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-require('dotenv').config()
+require('dotenv').config();
+var cors = require('cors');
 
 const app = express();
 
@@ -11,7 +12,8 @@ const apiRouter = require('./src/routes/index');
 
 //Database connection
 require('./src/configs/db');
-
+//Access-Control-Allow-Origin
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
