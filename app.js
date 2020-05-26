@@ -13,7 +13,7 @@ const apiRouter = require('./src/routes/index');
 //Database connection
 require('./src/configs/db');
 //Access-Control-Allow-Origin
-/* app.use(cors()); */
+app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

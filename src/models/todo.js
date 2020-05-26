@@ -23,8 +23,13 @@ const TodoSchema = new mongoose.Schema({
     },
     priority: {
         type: Number,
-        enum: [1, 2, 3, 4, 5],
-        default: 5
+        enum: [1, 2, 3],
+        default: 3
+    },
+    user: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 
 });

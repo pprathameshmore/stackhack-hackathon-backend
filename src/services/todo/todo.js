@@ -1,23 +1,23 @@
 //Dependency Injection
 const Todo = require('../../models/todo');
 
-const getAllTodo = async (search, sorting = { sort, a }, paging = { page: 1, limit: 10 }) => {
+const getAllTodo = async (user, search, sorting = { sort, a }, paging = { page: 1, limit: 10 }) => {
 
     switch (sorting.sort) {
         case 'date':
-            return await Todo.find(search ? { $text: { $search: search } } : {}).skip((paging.limit * paging.page) - paging.limit).
+            return await Todo.find(search ? { $and: [{ $text: { $search: search } }, { user: user }] } : { user: user }).skip((paging.limit * paging.page) - paging.limit).
                 limit(paging.limit).sort({ createdAt: sorting.a });
 
         case 'priority':
-            return await Todo.find(search ? { $text: { $search: search } } : {}).skip((paging.limit * paging.page) - paging.limit).
+            return await Todo.find(search ? { $and: [{ $text: { $search: search } }, { user: user }] } : { user: user }).skip((paging.limit * paging.page) - paging.limit).
                 limit(paging.limit).sort({ priority: sorting.a });
 
         case 'label':
-            return await Todo.find(search ? { $text: { $search: search } } : {}).skip((paging.limit * paging.page) - paging.limit).
+            return await Todo.find(search ? { $and: [{ $text: { $search: search } }, { user: user }] } : { user: user }).skip((paging.limit * paging.page) - paging.limit).
                 limit(paging.limit).sort({ label: sorting.a });
 
         default:
-            return await Todo.find(search ? { $text: { $search: search } } : {}).skip((paging.limit * paging.page) - paging.limit).
+            return await Todo.find(search ? { $and: [{ $text: { $search: search } }, { user: user }] } : { user: user }).skip((paging.limit * paging.page) - paging.limit).
                 limit(paging.limit).sort({ createdAt: sorting.a });
     }
 }
@@ -26,20 +26,20 @@ const saveTodo = async (todo) => {
     return await todo.save();
 }
 
-const getSingleTodo = async (todoId) => {
-    return await Todo.findById(todoId);
+const getSingleTodo = async (user, todoId) => {
+    return await Todo.findById({ $and: [{ _id: todoId }, { user: user }] });
 }
 
-const updateSingleTodo = async (todoId, data) => {
-    return await Todo.findByIdAndUpdate(todoId, data);
+const updateSingleTodo = async (user, todoId, data) => {
+    return await Todo.findByIdAndUpdate({ $and: [{ _id: todoId }, { user: user }] }, data);
 }
 
-const deleteTodo = async (todoId) => {
-    return await Todo.findByIdAndDelete(todoId);
+const deleteTodo = async (user, todoId) => {
+    return await Todo.findByIdAndDelete({ $and: [{ _id: todoId }, { user: user }] });
 }
 
-const deleteTodos = async () => {
-    return await Todo.remove({});
+const deleteTodos = async (user) => {
+    return await Todo.remove({ user: user });
 }
 
 exports.getAllTodo = getAllTodo;

@@ -6,7 +6,8 @@ function todoObj(todoObject) {
         label: todoObject.label,
         progress: todoObject.progress,
         isImportant: todoObject.isImportant,
-        priority: todoObject.priority
+        priority: todoObject.priority,
+        user: todoObject.user
     });
 }
 
