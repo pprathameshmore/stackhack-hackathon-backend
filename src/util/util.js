@@ -4,9 +4,9 @@ const Todo = require('../models/todo');
 /* Generate response */
 function response(statusCode, message, data) {
     return {
-        statusCode: statusCode,
-        message: message,
-        data: data
+        statusCode,
+        message,
+        data
     };
 }
 

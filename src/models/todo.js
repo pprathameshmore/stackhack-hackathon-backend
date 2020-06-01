@@ -4,8 +4,7 @@ const timestamp = require('mongoose-timestamp');
 const TodoSchema = new mongoose.Schema({
     task: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     label: {
         type: String,

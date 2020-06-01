@@ -27,15 +27,15 @@ const saveTodo = async (todo) => {
 }
 
 const getSingleTodo = async (user, todoId) => {
-    return await Todo.findById({ $and: [{ _id: todoId }, { user: user }] });
+    return await Todo.findOne({ $and: [{ _id: todoId }, { user: user }] });
 }
 
 const updateSingleTodo = async (user, todoId, data) => {
-    return await Todo.findByIdAndUpdate({ $and: [{ _id: todoId }, { user: user }] }, data);
+    return await Todo.findOneAndUpdate({ $and: [{ _id: todoId }, { user: user }] }, data);
 }
 
 const deleteTodo = async (user, todoId) => {
-    return await Todo.findByIdAndDelete({ $and: [{ _id: todoId }, { user: user }] });
+    return await Todo.findOneAndRemove({ $and: [{ _id: todoId }, { user: user }] });
 }
 
 const deleteTodos = async (user) => {

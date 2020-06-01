@@ -1,5 +1,4 @@
 //Middleware
-
 const { todoObj } = require('../util/todoObj');
 
 const { response, isDefVar, isDefObj, responsePaging } = require('../util/util');
@@ -86,7 +85,7 @@ exports.getSingleTodo = async (req, res, next) => {
 
         const user = req.userRef.userId;
 
-        const data = await getSingleTodo(user, todo_id).catch(err => res.status(500).json(response(500, err, [])));
+        const data = await getSingleTodo(user, todo_id).catch(err => res.status(500).json(response(500, err, null)));
 
         return res.status(200).json(response(200, 'Todo', data));
 
