@@ -19,17 +19,17 @@
 #### Clone repo to local  
 
 ```
-git clone git@github.com:santoshvijapure/stackhack-hackathon-frontend.git
+git clone git@github.com:pprathameshmore/stackhack-hackathon-backend.git
 ```
 #### install dependencies 
 ```
-cd Todo
+cd stackhack-hackathon-backend
 npm install 
 ```
 
 #### run dev server
 ```
-npm start
+node www/bin
 ```
 ## API Documentation
 
